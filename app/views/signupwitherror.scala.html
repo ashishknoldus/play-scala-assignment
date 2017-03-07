@@ -11,7 +11,7 @@
                         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                         <input type="text" class="form-control" name="name" id="name" value="@{data("name")}" placeholder="Enter your Name"/>
                     </div>
-                    <span class="signup-error">@{error("nameError")}</span>
+                    <span class="signup-error">@{error.getOrElse("nameError","")}</span>
                 </div>
             </div>
 
