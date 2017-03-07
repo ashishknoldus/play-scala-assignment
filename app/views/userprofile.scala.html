@@ -1,6 +1,8 @@
 @(indexTitle: String)(data: scala.collection.Map[String, String])
+@import java.io.File
 @main(title = indexTitle) {
 <div class="container table-responsive">
+    <img class="responsive" src="/home/knoldus/Temparory/"@{(new File(data("image"))).getName} />
     <table class="table table-striped">
         <tr>
             <td>Name</td>

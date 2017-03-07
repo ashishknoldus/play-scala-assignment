@@ -1,7 +1,7 @@
 package controllers
 
 import models.UserData
-import play.api.mvc.{Action, AnyContent, Controller}
+import play.api.mvc.{Action, Controller}
 
 /**
   * Created by knoldus on 7/3/17.
@@ -21,7 +21,7 @@ class LoginController extends Controller{
           Redirect(routes.ProfileController.showProfile())
             .withSession("connected" -> email)
         } else {
-          Redirect(routes.SignupController.showSignupForm())
+          Ok(views.html.loginwitherror("Login")("Email or password doesn't match"))
         }
 
 

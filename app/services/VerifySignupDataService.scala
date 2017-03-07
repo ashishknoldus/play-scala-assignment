@@ -1,14 +1,12 @@
 package services
 
-import java.util.regex.Pattern
-import java.util.regex.Matcher
+import java.util.regex.{Matcher, Pattern}
+
 import play.api.libs.Files.TemporaryFile
+import play.api.mvc.AnyContent
 import play.api.mvc.MultipartFormData.FilePart
-import play.api.mvc.{AnyContent, MultipartFormData}
-import play.mvc.BodyParser.MultipartFormData
 
 import scala.collection.{Map, mutable}
-import scala.collection.mutable.ListBuffer
 
 /**
   * Created by knoldus on 6/3/17.
@@ -58,39 +56,39 @@ class VerifySignupDataService {
     val pattern: Pattern = Pattern.compile(emailPattern)
     val matcher: Matcher = pattern.matcher(email)
 
-    if(name == "" ) {
+    if (name == "") {
       map("nameError") = "Name is not provided"
     }
 
-    if(email =="" || !matcher.matches() ) {
+    if (email == "" || !matcher.matches()) {
       map("emailError") = "Wrong email format or not provided"
     }
 
-    if(age.length < 1 || age.length > 3 || age.toInt < 18 || age.toInt > 60) {
+    if (age.length < 1 || age.length > 3 || age.toInt < 18 || age.toInt > 60) {
       map("ageError") = "Age should be in between 18 and 60 years"
     }
 
-    if(username == "") {
+    if (username == "") {
       map("usernameError") = "Username is incorrect or not provided"
     }
 
-    if(mobile == "" || mobile.length > 10 || mobile.charAt(0).toInt < 7) {
+    if (mobile == "" || mobile.length > 10 || mobile.charAt(0).toInt < 7) {
       map("mobileError") = "Wrong mobile number or not provided"
     }
 
-    if(! List[String]("male", "female", "other").contains(gender.toLowerCase) ) {
+    if (!List[String]("male", "female", "other").contains(gender.toLowerCase)) {
       map("genderError") = "Wrong option for a gender"
     }
 
-    if(password.length <6 || password.length >16) {
+    if (password.length < 6 || password.length > 16) {
       map("passwordError") = "Password should be of length 6 to 16"
     }
 
-    if(confirm != password) {
+    if (confirm != password) {
       map("confirmError") = "Password doesn't match"
     }
 
-    if(map.nonEmpty) {
+    if (map.nonEmpty) {
       Map[String, Option[Map[String, String]]](
         "error" -> Some(map),
         "data" -> Some(dataMap)
@@ -107,7 +105,7 @@ class VerifySignupDataService {
     val map = mutable.Map[String, String]()
 
     fileData.contentType match {
-      case Some(x) if x.substring(0,6) == "image/"=> {
+      case Some(x) if x.substring(0, 6) == "image/" => {
         map("image") = fileData.ref.file.getAbsolutePath
         map("imageError") = ""
       }
@@ -118,5 +116,4 @@ class VerifySignupDataService {
     }
     map
   }
-
 }
