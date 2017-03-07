@@ -22,7 +22,7 @@
                         <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                         <input type="text" class="form-control" name="email" id="email" value="@{data("email")}" placeholder="Enter your Email"/>
                     </div>
-                    <span class="signup-error">@{error("emailError")}</span>
+                    <span class="signup-error">@{error.getOrElse("emailError","")}</span>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
                         <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                         <input type="text" class="form-control" name="username" id="username" value="@{data("username")}" placeholder="Enter your Username"/>
                     </div>
-                    <span class="signup-error">@{error("usernameError")}</span>
+                    <span class="signup-error">@{error.getOrElse("usernameError","")}</span>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
                         <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                         <input type="text" class="form-control" name="mobile" id="mobile"  value="@{data("mobile")}"  placeholder="Enter your mobile number"/>
                     </div>
-                    <span class="signup-error">@{error("mobileError")}</span>
+                    <span class="signup-error">@{error.getOrElse("mobileError","")}</span>
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                         <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
                         <input type="text" class="form-control" name="age" id="age"  value="@{data("age")}"  placeholder="Enter your age"/>
                     </div>
-                    <span class="signup-error">@{error("ageError")}</span>
+                    <span class="signup-error">@{error.getOrElse("ageError","")}</span>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                             <option value="other">Other</option>
                         </select>
                     </div>
-                    <span class="signup-error">@{error("genderError")}</span>
+                    <span class="signup-error">@{error.getOrElse("genderError","")}</span>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                         <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
                     </div>
-                    <span class="signup-error">@{error("passwordError")}</span>
+                    <span class="signup-error">@{error.getOrElse("passwordError","")}</span>
                 </div>
             </div>
 
@@ -92,12 +92,12 @@
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                         <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
                     </div>
-                    <span class="signup-error">@{error("confirmError")}</span>
+                    <span class="signup-error">@{error.getOrElse("confirmError","")}</span>
                 </div>
             </div>
 
             <input type="file" class="file-input file-upload" name="file" id="file" value="Choose File">
-            <span class="signup-error">@{error("imageError")}</span>
+            <span class="signup-error">@{error.getOrElse("imageError","")}</span>
 
             <div class="form-group ">
                 <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Register</button>
