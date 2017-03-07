@@ -1,0 +1,32 @@
+@(indexTitle: String)(data: scala.collection.Map[String, String])
+@main(title = indexTitle) {
+<div class="container table-responsive">
+    <table class="table table-striped">
+        <tr>
+            <td>Name</td>
+            <td>@data("name")</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>@data("email")</td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>@data("password")</td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td>@data("age")</td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td>@data("gender")</td>
+        </tr>
+        <tr>
+            <td>Username</td>
+            <td>@data("username")</td>
+        </tr>
+    </table>
+</div>
+
+}(true)
