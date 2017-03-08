@@ -22,4 +22,7 @@ GET     /signout                    controllers.SignoutController.logout
 GET     /login                      controllers.LoginController.showLogin
 POST    /login                      controllers.LoginController.login
 
-# GET     /get-image                  controllers.ImageController.getImage(filePath: String)
+# GET     /get-image                controllers.ImageController.getImage(filePath: String)
+
+GET      /$path<.*>                 controllers.NotFoundController.notFoundPage(path)
+
