@@ -21,8 +21,11 @@ class ProfileController @Inject()(cache: CacheApi)  extends Controller{
                         case None => Map[String, String]()
                       }
 
-      if(userData.nonEmpty) {
-        Ok(views.html.userprofile(userData("name"))(userData))
+      if(userData.nonEmpty && userData("userType") != "admin") {
+        Ok(views.html.userprofile(userData))
+      }
+      else if(userData.nonEmpty && userData("userType") == "admin") {
+        Ok(views.html.adminprofile(userData)(cache.get("listOfUsers").getOrElse(List()))(cache))
       }
       else {
         Redirect(routes.HomeController.index())

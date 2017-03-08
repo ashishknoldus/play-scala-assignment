@@ -56,6 +56,12 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
                     cache.set(textResult("data").get("email"),
                     Map[String,String]("image" -> filePath, "userType" -> userType) ++ textResult("data").get)
 
+                    cache.set("listOfUsers",
+                      textResult("data").get("email") :: cache.get("listOfUsers").getOrElse(List())
+                    )
+
+                    println(cache.get("listOfUsers"))
+
                     Redirect(routes.ProfileController.showProfile())
                     .withSession("connected" -> textResult("data").get("email"))
                   }

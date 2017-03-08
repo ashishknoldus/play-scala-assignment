@@ -1,6 +1,6 @@
-@(indexTitle: String)(data: scala.collection.Map[String, String])
+@(data: scala.collection.Map[String, String])
 @import java.io.File
-@main(title = indexTitle) {
+@main(title = data("name")) {
 <div class="container table-responsive">
 
     <!--img class="responsive" src='routes.ImageController.getImage(data("image"))' / -->

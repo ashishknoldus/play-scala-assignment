@@ -1,0 +1,60 @@
+@(data: scala.collection.Map[String, String])(users: List[String])(cache: play.api.cache.CacheApi)
+@import java.io.File
+@main(title = data("name")) {
+<div class="container table-responsive">
+
+    <h3>Hey admin! Remember with great power comes great responsibilities.</h3>
+    <table class="table table-striped">
+        <tr>
+            <td>Name</td>
+            <td>@data("name")</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>@data("email")</td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td>@data("password")</td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td>@data("age")</td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td>@data("gender")</td>
+        </tr>
+        <tr>
+            <td>Username</td>
+            <td>@data("username")</td>
+        </tr>
+    </table>
+</div>
+
+<div class="container table-responsive">
+    <b>Users registered to the application</b>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Mobile</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        @for(userEmail <- users) {
+            <tr>
+                <td>@{cache.get[Map[String,String]](userEmail).get("name")}</td>
+                <td>@{cache.get[Map[String,String]](userEmail).get("age")}</td>
+                <td>@{cache.get[Map[String,String]](userEmail).get("mobile")}</td>
+                <td><a class="btn" href="/suspend/@{userEmail}">Suspend</a> <a class="btn" href="/resume/@{userEmail}">Resume</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>
+
+}(true)
