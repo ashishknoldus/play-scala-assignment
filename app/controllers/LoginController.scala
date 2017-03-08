@@ -1,9 +1,10 @@
 package controllers
 
 import com.google.inject.Inject
-import models.UserData
 import play.api.cache.CacheApi
 import play.api.mvc.{Action, Controller}
+import com.github.t3hnar.bcrypt._
+
 
 /**
   * Created by knoldus on 7/3/17.
@@ -20,7 +21,7 @@ class LoginController @Inject()(cache: CacheApi)  extends Controller{
         val password = data("password")(0)
 
         cache.get[Map[String,String]](email) match {
-          case Some(map) => { if(map("password") == password) {
+          case Some(map) => { if(map("password").bcrypt == password) {
             Redirect(routes.ProfileController.showProfile()).withSession("connected" -> email)
             } else {
               Ok(views.html.loginwitherror("Login")("Password doesn't match for that email"))

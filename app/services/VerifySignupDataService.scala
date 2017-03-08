@@ -1,12 +1,11 @@
 package services
 
 import java.util.regex.{Matcher, Pattern}
-
 import play.api.libs.Files.TemporaryFile
 import play.api.mvc.AnyContent
 import play.api.mvc.MultipartFormData.FilePart
-
 import scala.collection.{Map, mutable}
+import com.github.t3hnar.bcrypt._
 
 /**
   * Created by knoldus on 6/3/17.
@@ -37,8 +36,8 @@ class VerifySignupDataService {
     val age = textData("age")(0).trim
     val mobile = textData("mobile")(0).trim
     val gender = textData("gender")(0).trim
-    val password = textData("password")(0).trim
-    val confirm = textData("confirm")(0).trim
+    val password = textData("password")(0) //Don't trim password, it can have spaces
+    val confirm = textData("confirm")(0)
 
     val dataMap: mutable.Map[String, String] = mutable.Map[String, String]()
 
@@ -47,7 +46,7 @@ class VerifySignupDataService {
     dataMap("username") = username
     dataMap("mobile") = mobile
     dataMap("age") = age
-    dataMap("password") = password
+    dataMap("password") = password.bcrypt //Encryption
     dataMap("email") = email
 
     val map: mutable.Map[String, String] = mutable.Map[String, String]()
@@ -57,7 +56,7 @@ class VerifySignupDataService {
     val matcher: Matcher = pattern.matcher(email)
 
     if (name == "") {
-      map("nameError") = "Name is not provided"
+      map("nameError") = "Name is in incorrect format or not provided (Use only alphabetic characters)"
     }
 
     if (email == "" || !matcher.matches()) {
@@ -68,12 +67,12 @@ class VerifySignupDataService {
       map("ageError") = "Age should be in between 18 and 60 years"
     }
 
-    if (username == "") {
-      map("usernameError") = "Username is incorrect or not provided"
+    if (username == "" || !username.matches("^[a-zA-Z0-9_]+")) {
+      map("usernameError") = "Username is incorrect or not provided (Use only these characters- [a-z] [A-Z] [0-9] _ "
     }
 
-    if (mobile == "" || mobile.length > 10 || mobile.charAt(0).toInt < 7) {
-      map("mobileError") = "Wrong mobile number or not provided"
+    if (mobile.length != 10 ) {
+      map("mobileError") = "Wrong mobile number or not provided (Number should be of length 10)"
     }
 
     if (!List[String]("male", "female", "other").contains(gender.toLowerCase)) {

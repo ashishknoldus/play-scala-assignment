@@ -46,14 +46,21 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
                 val filePath = "/home/knoldus/Templates/" + file.getName+".png"
                 file.renameTo(new File(filePath))
 
-                cache.set(textResult("data").get("email"),
-                  Map[String,String]("image" -> filePath, "userType" -> userType) ++ textResult("data").get
-                )
+                cache.get(textResult("data").get("email")) match {
+                  case Some(_) => {
+                    Ok(views.html.signupwitherror("Signup",
+                    Map[String, String]("signupError" -> "Email id already registered"),
+                      textResult("data").get))
+                  }
+                  case None => {
+                    cache.set(textResult("data").get("email"),
+                    Map[String,String]("image" -> filePath, "userType" -> userType) ++ textResult("data").get)
 
-                println(cache.get(textResult("data").get("email")))
+                    Redirect(routes.ProfileController.showProfile())
+                    .withSession("connected" -> textResult("data").get("email"))
+                  }
+                }
 
-                Redirect(routes.ProfileController.showProfile())
-                  .withSession("connected" -> textResult("data").get("email"))
               }
             }
           }
