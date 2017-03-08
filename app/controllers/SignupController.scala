@@ -3,16 +3,15 @@ package controllers
 import java.io.File
 
 import com.google.inject.Inject
-import models.UserData
 import play.api.mvc.{Action, AnyContent, Controller}
 import services.VerifySignupDataService
 import play.api.cache._
-
+import play.api.Configuration
 
 /**
   * Created by knoldus on 6/3/17.
   */
-class SignupController @Inject()(verifySignupDataService: VerifySignupDataService) extends Controller {
+class SignupController @Inject()(verifySignupDataService: VerifySignupDataService, cache: CacheApi, configuration: Configuration) extends Controller {
   def showSignupForm = Action {
     Ok(views.html.signup("Signup"))
   }
@@ -23,6 +22,12 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
 
     val verificationResult = verifySignupDataService.verifyData(body)
 
+    val userTypeOption = configuration.getString("user-type")
+
+    val userType: String = userTypeOption match {
+                    case Some(x) => x
+                    case None => ""
+                  }
 
     verificationResult match {
       case Some((textResult, fileResult)) => {
@@ -38,10 +43,15 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
               case _ => {
 
                 val file: File = new File(fileResult("image"))
-                val filePath = "/home/knoldus/Templates/" + file.getName
+                val filePath = "/home/knoldus/Templates/" + file.getName+".png"
                 file.renameTo(new File(filePath))
 
-                UserData.saveUser(textResult("data").get ++ fileResult)
+                cache.set(textResult("data").get("email"),
+                  Map[String,String]("image" -> filePath, "userType" -> userType) ++ textResult("data").get
+                )
+
+                println(cache.get(textResult("data").get("email")))
+
                 Redirect(routes.ProfileController.showProfile())
                   .withSession("connected" -> textResult("data").get("email"))
               }

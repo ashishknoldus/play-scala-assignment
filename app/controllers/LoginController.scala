@@ -1,12 +1,14 @@
 package controllers
 
+import com.google.inject.Inject
 import models.UserData
+import play.api.cache.CacheApi
 import play.api.mvc.{Action, Controller}
 
 /**
   * Created by knoldus on 7/3/17.
   */
-class LoginController extends Controller{
+class LoginController @Inject()(cache: CacheApi)  extends Controller{
 
   def login = Action {implicit request =>
 
@@ -17,11 +19,14 @@ class LoginController extends Controller{
         val email = data("email")(0)
         val password = data("password")(0)
 
-        if(UserData.userExists(email, password)) {
-          Redirect(routes.ProfileController.showProfile())
-            .withSession("connected" -> email)
-        } else {
-          Ok(views.html.loginwitherror("Login")("Email or password doesn't match"))
+        cache.get[Map[String,String]](email) match {
+          case Some(map) => { if(map("password") == password) {
+            Redirect(routes.ProfileController.showProfile()).withSession("connected" -> email)
+            } else {
+              Ok(views.html.loginwitherror("Login")("Password doesn't match for that email"))
+            }
+          }
+          case None => Ok(views.html.loginwitherror("Login")("There is no account with that email"))
         }
 
 
