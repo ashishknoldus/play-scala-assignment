@@ -3,10 +3,10 @@ package controllers
 import java.io.File
 
 import com.google.inject.Inject
+import play.api.Configuration
+import play.api.cache._
 import play.api.mvc.{Action, AnyContent, Controller}
 import services.VerifySignupDataService
-import play.api.cache._
-import play.api.Configuration
 
 /**
   * Created by knoldus on 6/3/17.
@@ -25,9 +25,9 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
     val userTypeOption = configuration.getString("user-type")
 
     val userType: String = userTypeOption match {
-                    case Some(x) => x
-                    case None => ""
-                  }
+      case Some(x) => x
+      case None => ""
+    }
 
     verificationResult match {
       case Some((textResult, fileResult)) => {
@@ -42,19 +42,25 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
               }
               case _ => {
 
-                val file: File = new File(fileResult("image"))
-                val filePath = "/home/knoldus/Templates/" + file.getName+".png"
-                file.renameTo(new File(filePath))
+                /*val file: File = new File(fileResult("image"))
+
+                val filePath = "file:///home/knoldus/Templates/" + file.getName
+
+                println("Absolute path : "+file.getAbsolutePath)
+                println("Full file path : "+"/home/knoldus/Templates/" + file.getName)
+                println("Absolute path : "+file.getAbsolutePath)
+
+                file.renameTo(new File(filePath))*/
 
                 cache.get(textResult("data").get("email")) match {
                   case Some(_) => {
                     Ok(views.html.signupwitherror("Signup",
-                    Map[String, String]("signupError" -> "Email id already registered"),
+                      Map[String, String]("signupError" -> "Email id already registered"),
                       textResult("data").get))
                   }
                   case None => {
                     cache.set(textResult("data").get("email"),
-                    Map[String,String]("image" -> filePath, "userType" -> userType) ++ textResult("data").get)
+                      Map[String, String]("image" -> fileResult("image"), "userType" -> userType, "suspended" -> "no") ++ textResult("data").get)
 
                     cache.set("listOfUsers",
                       textResult("data").get("email") :: cache.get("listOfUsers").getOrElse(List())
@@ -63,10 +69,9 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
                     println(cache.get("listOfUsers"))
 
                     Redirect(routes.ProfileController.showProfile())
-                    .withSession("connected" -> textResult("data").get("email"))
+                      .withSession("connected" -> textResult("data").get("email"))
                   }
                 }
-
               }
             }
           }

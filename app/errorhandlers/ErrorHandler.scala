@@ -1,13 +1,10 @@
 package errorhandlers
 
-import javax.inject.Singleton
-
 import play.api.http.HttpErrorHandler
-import play.api.mvc._
 import play.api.mvc.Results._
+import play.api.mvc._
 
 import scala.concurrent._
-import play.api.http.HttpErrorHandler
 
 /**
   * Created by knoldus on 2/3/17.

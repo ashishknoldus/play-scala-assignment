@@ -1,11 +1,13 @@
 package services
 
 import java.util.regex.{Matcher, Pattern}
+
+import com.github.t3hnar.bcrypt._
 import play.api.libs.Files.TemporaryFile
 import play.api.mvc.AnyContent
 import play.api.mvc.MultipartFormData.FilePart
+import java.io.File
 import scala.collection.{Map, mutable}
-import com.github.t3hnar.bcrypt._
 
 /**
   * Created by knoldus on 6/3/17.
@@ -36,7 +38,8 @@ class VerifySignupDataService {
     val age = textData("age")(0).trim
     val mobile = textData("mobile")(0).trim
     val gender = textData("gender")(0).trim
-    val password = textData("password")(0) //Don't trim password, it can have spaces
+    val password = textData("password")(0)
+    //Don't trim password, it can have spaces
     val confirm = textData("confirm")(0)
 
     val dataMap: mutable.Map[String, String] = mutable.Map[String, String]()
@@ -71,7 +74,7 @@ class VerifySignupDataService {
       map("usernameError") = "Username is incorrect or not provided (Use only these characters- [a-z] [A-Z] [0-9] _ "
     }
 
-    if (mobile.length != 10 ) {
+    if (mobile.length != 10) {
       map("mobileError") = "Wrong mobile number or not provided (Number should be of length 10)"
     }
 
@@ -105,7 +108,8 @@ class VerifySignupDataService {
 
     fileData.contentType match {
       case Some(x) if x.substring(0, 6) == "image/" => {
-        map("image") = fileData.ref.file.getAbsolutePath
+        val movedFile = fileData.ref.moveTo(new File("/home/knoldus/Templates/" + fileData.filename ))
+        map("image") = "file://"+movedFile.getAbsolutePath
         map("imageError") = ""
       }
       case _ => {
