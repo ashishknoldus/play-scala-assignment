@@ -1,90 +1,137 @@
 package app.controllers
 
-import com.google.inject.Inject
-import controllers.{SignupController, routes}
-import play.api.mvc.Result
-import play.api.test.{FakeRequest, Helpers}
+import scala.concurrent.Future
+import play.api.mvc._
+import org.mockito.Mockito._
+import controllers.SignupController
+import org.scalatest.mock.MockitoSugar
+import org.scalatestplus.play.{OneAppPerSuite, PlaySpec}
+import play.api.Configuration
+import play.api.cache.CacheApi
+import play.api.libs.Files.TemporaryFile
+import play.api.mvc.MultipartFormData.FilePart
+import play.api.mvc.{AnyContent, AnyContentAsMultipartFormData, MultipartFormData}
+import play.api.test.FakeRequest
+import services.VerifySignupDataService
 import play.api.test.Helpers._
 
-import scala.concurrent.Future
-import org.scalatestplus.play.{OneAppPerSuite, PlaySpec}
-import services.VerifySignupDataService
-import org.mockito.Mockito._
-import org.scalatest.mock.MockitoSugar
-import play.api.{Configuration, test}
-import play.api.cache.CacheApi
-import play.api.mvc.AnyContent
-import play.api.test.Helpers.contentAsString
-
 import scala.collection.Map
-import scala.reflect.macros.whitebox
+import scala.concurrent.duration.DurationLong
 
 /**
   * Created by knoldus on 9/3/17.
   */
-class SignupControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar{
+class SignupControllerSpec  extends PlaySpec with OneAppPerSuite with MockitoSugar {
 
-  "signup controller " should {
-
-    "redirect successfully with correct data" in {
-
-      val anyContent: AnyContent = null
-
-      // mock service, cache and configuration
-      val verifySignupDataService = mock[VerifySignupDataService]
-        when(verifySignupDataService.verifyData(anyContent)) thenReturn Some(textData, fileData)
-      val cache = mock[CacheApi]
-      val config = mock[Configuration]
-
-      //controller
-      val controller = new SignupController(verifySignupDataService, cache, config)
-
-      val request = FakeRequest(Helpers.POST, "/signup")
-        .withHeaders("X-Requested-With" -> "1")
-        .withFormUrlEncodedBody(
-          "name" -> "Ashish Tomer",
-          "username" -> "Ashish1269",
-          "age" -> "19",
-          "email" -> "ashish1269@gmail.com",
-          "mobile" -> "9876543210",
-          "gender" -> "Male",
-          "password" -> "1234567890",
-          "confirm" -> "1234567890",
-          "file" -> ""
-        )
-
-      val result: Future[Result] = controller.handleSignupForm(request)
-
-      /*val nextUrl = Helpers.redirectLocation(result) match {
-        case Some(s: String) => s
-        case _ => ""
-      }*/
-
-      redirectLocation(result) must contain(routes.ProfileController.showProfile.url)
-
-    }
-  }
+  val cache = mock[CacheApi]
+  val configuration = mock[Configuration]
+  val verifySignupDataService = mock[VerifySignupDataService]
 
   val dataMap: Map[String, String] = Map[String,String](
     "name" -> "Ashish Tomer",
-    "username" -> "Ashish1269",
-    "age" -> "19",
+    "username" -> "ashish1269",
+    "age" -> "45",
     "email" -> "ashish1269@gmail.com",
     "mobile" -> "9876543210",
-    "gender" -> "Male",
+    "gender" -> "male",
     "password" -> "1234567890"
   )
 
-  val errorMap: Map[String, String] = Map[String, String]() //No error in textData
-
   val textData  = Map[String, Option[Map[String, String]]](
-    "error" -> Some(errorMap),
+    "error" -> None, //No error in textData
     "data" -> Some(dataMap)
   )
 
   val fileData = Map[String, String](
-    "image" -> "file:///home/knoldus/Templates/anImage.jpg",
+    "image" -> "file:///home/knoldus/Pictures/wallpapers/1321922_STpOMHj.jpg",
     "imageError" -> "" //No error in image upload
   )
 
+
+  val anyContent: AnyContent =AnyContentAsMultipartFormData(
+    MultipartFormData(
+      scala.Predef.Map(
+        "name" -> Seq("Ashish Tomer"),
+        "email" -> Seq("ashish1269@gmail.com"),
+        "username" -> Seq("ashish1269"),
+        "age" -> Seq("45"),
+        "confirm" -> Seq("1234567890"),
+        "mobile" -> Seq("9876543210"),
+        "gender" -> Seq("male"),
+        "password" -> Seq("1234567890")
+      ),
+      Vector(
+        FilePart[TemporaryFile](
+          key = "file",
+          filename = "1321922_STpOMHj.jpg",
+          contentType = Some("image/jpeg"),
+          ref = TemporaryFile(new java.io.File("/home/knoldus/Pictures/wallpapers/1321922_STpOMHj.jpg")) //uploaded file will go to /tmp/ directory
+        )
+      ),
+      Vector()
+    )
+  )
+
+
+
+  "Signup Controller" should {
+
+    "move to user profile page with right data" in {
+
+      when (configuration.getString("user-type")) thenReturn Some("admin")
+
+      when (cache.get("ashish1269@gmail.com")) thenReturn None
+
+      doReturn(null).when(cache).set("ashish1269@gmail.com","")
+      doReturn(Some(List("vijay@lore.com"))).when(cache).get("listOfUsers")
+
+      val controller = new SignupController(verifySignupDataService, cache, configuration)
+
+      val request = FakeRequest(POST, "/signup")
+                      .withMultipartFormDataBody(
+                        MultipartFormData(
+                          scala.Predef.Map(
+                          "name" -> Seq("Ashish Tomer"),
+                          "email" -> Seq("ashish1269@gmail.com"),
+                          "username" -> Seq("ashish1269"),
+                          "age" -> Seq("45"),
+                          "confirm" -> Seq("1234567890"),
+                          "mobile" -> Seq("9876543210"),
+                          "gender" -> Seq("Male"),
+                          "password" -> Seq("1234567890")
+                        ),
+                        Vector(
+                          FilePart[TemporaryFile](
+                            key = "file",
+                            filename = "1321922_STpOMHj.jpg",
+                            contentType = Some("image/jpeg"),
+                            ref = TemporaryFile(new java.io.File("/home/knoldus/Pictures/wallpapers/1321922_STpOMHj.jpg")) //uploaded file will go to /tmp/ directory
+                          )
+                        ),
+                        Vector()
+                        )
+                      )
+
+      when (verifySignupDataService.verifyData(request.body)) thenReturn Some((textData, fileData))
+
+      val result: Future[Result] = controller.handleSignupForm(request)
+
+      status(result) mustBe 303 //Redirected
+    }
+
+    "show the signup form with GET method" in {
+
+      val request = FakeRequest(GET, "/signup")
+
+      val controller = new SignupController(verifySignupDataService , cache , configuration)
+
+      val result: Future[Result] = controller.showSignupForm(request)
+
+      contentAsString(result) must include("<title>Signup</title>")
+    }
+
+  }
+
 }
+
+

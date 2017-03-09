@@ -6,6 +6,8 @@ import play.api.cache._
 import play.api.mvc.{Action, AnyContent, Controller}
 import services.VerifySignupDataService
 
+import scala.collection.Map
+
 /**
   * Created by knoldus on 6/3/17.
   */
@@ -17,6 +19,7 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
   def handleSignupForm = Action { implicit request =>
 
     val body: AnyContent = request.body
+
     val verificationResult = verifySignupDataService.verifyData(body)
     val userTypeOption = configuration.getString("user-type")
 
@@ -26,21 +29,23 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
     }
 
     verificationResult match {
-      case Some((textResult, fileResult)) => {
+      case Some((textResult: Map[String, Option[Map[String, String]]], fileResult)) => {
         textResult("error") match {
-          case Some(x) => {
-            Ok(views.html.signupwitherror("Signup", fileResult ++ textResult("error").get, textResult("data").get))
+          case Some(_) =>{
+
+            Ok(views.html.signupwitherror("Signup Text Error", fileResult ++ textResult("error").get, textResult("data").get))
           }
+
           case None => {
             fileResult("imageError") match {
               case x: String if x.length > 5 => {
-                Ok(views.html.signupwitherror("Signup", fileResult ++ textResult("error").getOrElse(Map[String, String]()), textResult("data").getOrElse(Map[String, String]())))
+                Ok(views.html.signupwitherror("Signup Image Error", fileResult ++ textResult("error").getOrElse(Map[String, String]()), textResult("data").getOrElse(Map[String, String]())))
               }
               case _ => {
 
                 cache.get(textResult("data").get("email")) match {
                   case Some(_) => {
-                    Ok(views.html.signupwitherror("Signup",
+                    Ok(views.html.signupwitherror("Signup Id Taken",
                       Map[String, String]("signupError" -> "Email id already registered"),
                       textResult("data").get))
                   }
@@ -52,11 +57,9 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
                       textResult("data").get("email") :: cache.get("listOfUsers").getOrElse(List())
                     )
 
-                    println(cache.get("listOfUsers"))
-
                     Redirect(routes.ProfileController.showProfile())
                       .withSession("connected" -> textResult("data").get("email"))
-                  }
+                  } case _ => Ok("Couldn't find a match")
                 }
               }
             }

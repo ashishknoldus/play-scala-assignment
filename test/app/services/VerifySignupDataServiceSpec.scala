@@ -6,7 +6,7 @@ import play.api.libs.Files.TemporaryFile
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.mvc.{AnyContent, AnyContentAsMultipartFormData, MultipartFormData}
 import services.VerifySignupDataService
-import org.mindrot.jbcrypt.BCrypt;
+import org.mindrot.jbcrypt.BCrypt
 import scala.collection.Map
 
 /**

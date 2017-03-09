@@ -12,7 +12,6 @@ libraryDependencies ++= Seq(
   ws,
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test,
   "com.github.t3hnar" %% "scala-bcrypt" % "3.0",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.0" % "test",
   specs2 % Test
 )
 
