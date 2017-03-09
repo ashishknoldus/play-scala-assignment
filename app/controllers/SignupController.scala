@@ -19,9 +19,7 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
   def handleSignupForm = Action { implicit request =>
 
     val body: AnyContent = request.body
-
     val verificationResult = verifySignupDataService.verifyData(body)
-
     val userTypeOption = configuration.getString("user-type")
 
     val userType: String = userTypeOption match {
@@ -41,16 +39,6 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
                 Ok(views.html.signupwitherror("Signup", fileResult ++ textResult("error").get, textResult("data").get))
               }
               case _ => {
-
-                /*val file: File = new File(fileResult("image"))
-
-                val filePath = "file:///home/knoldus/Templates/" + file.getName
-
-                println("Absolute path : "+file.getAbsolutePath)
-                println("Full file path : "+"/home/knoldus/Templates/" + file.getName)
-                println("Absolute path : "+file.getAbsolutePath)
-
-                file.renameTo(new File(filePath))*/
 
                 cache.get(textResult("data").get("email")) match {
                   case Some(_) => {

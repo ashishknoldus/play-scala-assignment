@@ -17,11 +17,6 @@ class ProfileController @Inject()(cache: CacheApi) extends Controller {
 
       val userData = userDataOption.fold(Map.empty[String, String])(identity)
 
-      /*val userData = userDataOption match {
-        case Some(x) => x
-        case None => Map[String, String]()
-      }*/
-
       if (userData.nonEmpty && userData("userType") != "admin") {
         Ok(views.html.userprofile(userData))
       }
