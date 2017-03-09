@@ -1,14 +1,16 @@
+package app.controllers
+
 /**
   * Created by knoldus on 9/3/17.
   */
 
 import controllers.HomeController
-
-import scala.concurrent.Future
 import org.scalatestplus.play._
 import play.api.mvc._
-import play.api.test._
 import play.api.test.Helpers._
+import play.api.test._
+
+import scala.concurrent.Future
 
 class HomeControllerSpec extends PlaySpec with Results{
 

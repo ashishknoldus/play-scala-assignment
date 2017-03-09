@@ -1,7 +1,5 @@
 package controllers
 
-import java.io.File
-
 import com.google.inject.Inject
 import play.api.Configuration
 import play.api.cache._
@@ -36,7 +34,7 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
           case None => {
             fileResult("imageError") match {
               case x: String if x.length > 5 => {
-                Ok(views.html.signupwitherror("Signup", fileResult ++ textResult("error").get, textResult("data").get))
+                Ok(views.html.signupwitherror("Signup", fileResult ++ textResult("error").getOrElse(Map[String, String]()), textResult("data").getOrElse(Map[String, String]())))
               }
               case _ => {
 

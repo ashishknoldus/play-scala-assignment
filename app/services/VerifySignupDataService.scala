@@ -106,7 +106,11 @@ class VerifySignupDataService {
   private def verifyFileData(fileData: FilePart[TemporaryFile]): Map[String, String] = {
     val map = mutable.Map[String, String]()
 
+    println(s"------Submitted file ------ $fileData")
+
+
     fileData.contentType match {
+
       case Some(x) if x.substring(0, 6) == "image/" => {
         val movedFile = fileData.ref.moveTo(new File("/home/knoldus/Templates/" + fileData.filename ))
         map("image") = "file://"+movedFile.getAbsolutePath
