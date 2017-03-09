@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="355f5803-45a8-45dd-ba93-53757cf9d9b7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/HomeControllerSpec.scala" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/SBT__org_scala_lang_modules_scala_xml_2_11_1_0_2_jar.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/ApplicationSpec.scala" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/IntegrationSpec.scala" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/root.iml" afterPath="$PROJECT_DIR$/.idea/modules/root.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/ImageController.scala" afterPath="$PROJECT_DIR$/app/controllers/ImageController.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/ProfileController.scala" afterPath="$PROJECT_DIR$/app/controllers/ProfileController.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/SignupController.scala" afterPath="$PROJECT_DIR$/app/controllers/SignupController.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/signupwitherror.scala.html" afterPath="$PROJECT_DIR$/app/views/signupwitherror.scala.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sbt" afterPath="$PROJECT_DIR$/build.sbt" />
     </list>
     <ignored path="$PROJECT_DIR$/target/coffeescript/" />
     <ignored path="$PROJECT_DIR$/target/jshint/" />
@@ -672,7 +661,14 @@
       <option name="project" value="LOCAL" />
       <updated>1488946544933</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Pushing everything for hardware maintenance (touchpad)">
+      <created>1489037346341</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1489037346341</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -747,7 +743,8 @@
     <MESSAGE value="Encryption done" />
     <MESSAGE value="Admin template created successfully" />
     <MESSAGE value="404 Handled" />
-    <option name="LAST_COMMIT_MESSAGE" value="404 Handled" />
+    <MESSAGE value="Pushing everything for hardware maintenance (touchpad)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pushing everything for hardware maintenance (touchpad)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
