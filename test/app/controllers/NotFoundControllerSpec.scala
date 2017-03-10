@@ -14,9 +14,11 @@ import scala.concurrent.Future
   */
 class NotFoundControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar {
 
+
+
   "Not Found Controller" should {
 
-    "display 404 page#notFoundPage" in {
+    "display 404 page#showProfile" in {
 
       val request = FakeRequest(GET, "/signup")
       val controller = new NotFoundController

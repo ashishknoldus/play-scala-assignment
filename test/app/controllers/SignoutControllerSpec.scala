@@ -17,9 +17,9 @@ class SignoutControllerSpec  extends PlaySpec with OneAppPerSuite with MockitoSu
 
   "Signup Controller" should {
 
-    "signout#signup" in {
+    "signout with#signout" in {
 
-      val request = FakeRequest(GET, "/signup")
+      val request = FakeRequest(GET, "/signout")
       val controller = new SignoutController
 
       val result: Future[Result] = controller.logout(request)

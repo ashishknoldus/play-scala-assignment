@@ -11,9 +11,16 @@ class ProfileController @Inject()(cache: CacheApi) extends Controller {
 
   def showProfile = Action { implicit request =>
 
+    println("Request : " + request)
+    println("Session : " + request.session)
+    println("Session.get : " + request.session.get("connected"))
+
     request.session.get("connected").map { email =>
 
+      println("email - " + email)
       val userDataOption = cache.get[Map[String, String]](email)
+
+      println("UserDataOption --- " + userDataOption)
 
       val userData = userDataOption.fold(Map.empty[String, String])(identity)
 
