@@ -25,7 +25,7 @@ POST    /login                      controllers.LoginController.login
 
 
 GET      /suspend/:email            controllers.UserManagementController.suspend(email: String)
-GET      /resume/:email            controllers.UserManagementController.resume(email: String)
+GET      /resume/:email             controllers.UserManagementController.resume(email: String)
 
 # Javascript Routes
 GET     /javascriptRoutes           controllers.ResourceRouterController.javascriptRoutes

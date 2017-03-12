@@ -52,12 +52,17 @@ $(function(){
 
     var submitSignupForm = function(form) {
 
-        console.log(form)
+        //FormData for multipart data
+        //Not widely supported
+        //Ref : https://stackoverflow.com/questions/5392344/sending-multipart-formdata-with-jquery-ajax
+
+        data = new  FormData(jQuery(form)[0])
 
         var ajaxCallBack = {
             method: 'POST',
+            data: data,
             contentType: false,
-            data: form.serialize(),
+            processData: false,
             success: function(data) {
 
                 $('section.content').fadeOut('fast', function(){
