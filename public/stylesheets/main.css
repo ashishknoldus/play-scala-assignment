@@ -74,3 +74,24 @@ span.signup-error {
 padding: 0;
 margin: 0;
 }
+
+section.content {
+
+min-height: 500px;
+
+}
+
+section.footer {
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+    height: 100px;
+    background-color: inherit:
+    padding-top: 30px;
+    color: #3e3e3e;
+    text-align: center;
+    line-height: 70px;
+
+}

@@ -25,12 +25,12 @@ class LoginController @Inject()(cache: CacheApi) extends Controller {
             if (map("password").bcrypt == password) {
               Redirect(routes.ProfileController.showProfile()).withSession("connected" -> email)
             } else if (map("suspended") == "yes") {
-              Ok(views.html.loginwitherror("Login")("You've been suspended by admin. Contact admin."))
+              Ok(views.html.loginwitherror("You've been suspended by admin. Contact admin."))
             } else {
-              Ok(views.html.loginwitherror("Login")("Password doesn't match for that email"))
+              Ok(views.html.loginwitherror("Password doesn't match for that email"))
             }
           }
-          case None => Ok(views.html.loginwitherror("Login")("There is no account with that email"))
+          case None => Ok(views.html.loginwitherror("There is no account with that email"))
         }
 
 
@@ -41,7 +41,7 @@ class LoginController @Inject()(cache: CacheApi) extends Controller {
   }
 
   def showLogin = Action {
-    Ok(views.html.login("Login"))
+    Ok(views.html.login())
   }
 
 }

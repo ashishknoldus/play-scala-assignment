@@ -16,7 +16,9 @@ class VerifySignupDataService {
 
   def verifyData(userData: AnyContent): Option[(Map[String, Option[Map[String, String]]], Map[String, String])] = {
 
+    println("userData : " + userData)
     val multipartData = userData.asMultipartFormData
+    println("multipartData : " + multipartData)
 
     multipartData match {
       case Some(wholeData) => {

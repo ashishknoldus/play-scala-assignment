@@ -1,14 +1,15 @@
 package controllers
 
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{Action, Controller, EssentialAction}
 import play.api.routing._
+import routes.javascript._
 
 /**
   * Created by knoldus on 10/3/17.
   */
 class ResourceRouterController extends Controller {
 
-  def javascriptRoutes = Action { implicit request =>
+  def javascriptRoutes: EssentialAction = Action { implicit request =>
     Ok(
       JavaScriptReverseRouter("jsRoutes")(
         routes.javascript.HomeController.index,

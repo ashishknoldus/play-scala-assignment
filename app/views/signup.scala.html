@@ -1,8 +1,6 @@
-@(signupTitle: String)
-@main(title = signupTitle) {
 <div class="row main">
     <div class="main-login main-center">
-        <form class="form-horizontal" method="post" action="signup" enctype="multipart/form-data">
+        <form class="form-horizontal" method="post" action="signup" enctype="multipart/form-data" id="signup-form">
 
             <div class="form-group">
                 <label for="name" class="cols-sm-2 control-label">Your Name</label>
@@ -103,4 +101,3 @@
         </form>
     </div>
 </div>
-}(false)

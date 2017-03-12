@@ -13,12 +13,15 @@ import scala.collection.Map
   */
 class SignupController @Inject()(verifySignupDataService: VerifySignupDataService, cache: CacheApi, configuration: Configuration) extends Controller {
   def showSignupForm = Action {
-    Ok(views.html.signup("Signup"))
+    Ok(views.html.signup())
   }
 
   def handleSignupForm = Action { implicit request =>
 
     val body: AnyContent = request.body
+
+    println("Body : " + body)
+
 
     val verificationResult = verifySignupDataService.verifyData(body)
     val userTypeOption = configuration.getString("user-type")
@@ -27,6 +30,8 @@ class SignupController @Inject()(verifySignupDataService: VerifySignupDataServic
       case Some(x) => x
       case None => ""
     }
+
+    println(verificationResult)
 
     verificationResult match {
       case Some((textResult: Map[String, Option[Map[String, String]]], fileResult)) => {

@@ -1,8 +1,7 @@
 @(signupTitle: String, error: scala.collection.Map[String, String], data: scala.collection.Map[String, String])
-@main(title = signupTitle) {
 <div class="row main">
     <div class="main-login main-center">
-        <form class="form-horizontal" method="post" action="signup" enctype="multipart/form-data">
+        <form id="signup-form" class="form-horizontal" method="post" action="signup" enctype="multipart/form-data">
             <span class="signup-error">@{error.getOrElse("signupError","")}</span>
 
             <div class="form-group">
@@ -116,4 +115,3 @@
         </form>
     </div>
 </div>
-}(false)
