@@ -12,8 +12,8 @@ import scala.collection.Map
   * Created by knoldus on 6/3/17.
   */
 class SignupController @Inject()(verifySignupDataService: VerifySignupDataService, cache: CacheApi, configuration: Configuration) extends Controller {
-  def showSignupForm = Action {
-    Ok(views.html.signup())
+  def showSignupForm = Action {implicit request =>
+    Ok(views.html.signup(request))
   }
 
   def handleSignupForm = Action { implicit request =>

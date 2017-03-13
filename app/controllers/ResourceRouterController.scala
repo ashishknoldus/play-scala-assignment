@@ -13,6 +13,7 @@ class ResourceRouterController extends Controller {
     Ok(
       JavaScriptReverseRouter("jsRoutes")(
         routes.javascript.HomeController.index,
+        routes.javascript.HomeDataController.homeData,
         routes.javascript.LoginController.login,
         routes.javascript.LoginController.showLogin,
         routes.javascript.NotFoundController.notFoundPage,

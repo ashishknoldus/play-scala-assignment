@@ -1,4 +1,5 @@
-@(errorMsg: String)
+@(errorMsg: String)(implicit request: play.api.mvc.RequestHeader)
+
 <div class="row main">
     <div class="main-login main-center">
         <form id="login-form" class="form-horizontal" method="post" action="login">
@@ -33,3 +34,8 @@
         </form>
     </div>
 </div>
+@if(request.session.isEmpty){
+<metadata login="false" ></metadata>
+}else {
+<metadata login="true" ></metadata>
+}

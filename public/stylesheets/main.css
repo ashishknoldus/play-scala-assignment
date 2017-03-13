@@ -76,6 +76,7 @@ margin: 0;
 }
 
 section.content {
+opacity: 1;
 
 min-height: 500px;
 

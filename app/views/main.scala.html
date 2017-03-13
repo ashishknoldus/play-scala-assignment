@@ -1,9 +1,10 @@
-@(title: String)(content: Html)(loginStatus: Boolean)
+@(content: Html)(implicit request: play.api.mvc.RequestHeader)
+
 <!DOCTYPE html:5>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@title</title>
+    <title>Home</title>
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
@@ -19,23 +20,27 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">WebSiteName</a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand home-link home-data-link" href="home-data">WebSiteName</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            @if(loginStatus){
-            <li><a href="#" id="signout"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
-            }else{
-            <li ><a href="#" id="signup-nav-link"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#" id="login-nav-link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            }
-        </ul>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a class="home-data-link" href="home-data">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right notLogin">
+                <li id="user-profile-li"><a href="#" id="user-profile-nav-link"><span class="glyphicon glyphicon-user"></span> User</a></li>
+                <li id="signout-li"><a href="#" id="signout-nav-link" ><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
+                <li id="signup-li"><a href="#" id="signup-nav-link"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li id="login-li"><a href="#" id="login-nav-link"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
-    <section class="content">@content</section>
-
+    <section class="content" login="false" counter="0">@content</section>
     <section class="footer">&copy; Copyright Ashish Tomer</section>
 
 </body>

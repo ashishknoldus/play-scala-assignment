@@ -1,7 +1,6 @@
 @(data: scala.collection.Map[String, String])(users: List[String])(cache: play.api.cache.CacheApi)(implicit request: play.api.mvc.RequestHeader)
 @import java.io.File
 @suspended = {false}
-@main(title = data("name")) {
 <div class="container table-responsive" style="background-color: #fffff1; margin-bottom: 10px">
 
     <h3>Hey admin! Remember with great power comes great responsibilities.</h3>'
@@ -68,14 +67,14 @@
                 <td>@{cache.get[Map[String,String]](userEmail).get("mobile")}</td>
                 <td>
                     @if(cache.get[Map[String,String]](userEmail).get("suspended") == "yes"){
-                    <a class="btn disabled" href="/suspend/@{userEmail}" style="color: brown!important">
+                    <a class="btn suspend disabled" href="/suspend/@{userEmail}" style="color: brown!important">
                         } else {
-                        <a class="btn" href="/suspend/@{userEmail}">
+                        <a class="btn suspend" href="/suspend/@{userEmail}">
                             }Suspend</a>
                         @if(cache.get[Map[String,String]](userEmail).get("suspended") == "no"){
-                        <a class="btn disabled" href="/resume/@{userEmail}" style="color: brown!important">
+                        <a class="btn resume disabled" href="/resume/@{userEmail}" style="color: brown!important">
                             } else {
-                            <a class="btn" href="/resume/@{userEmail}">
+                            <a class="btn resume" href="/resume/@{userEmail}">
                                 }Resume</a></td>
             </tr>
             }
@@ -83,4 +82,4 @@
     </table>
 
 </div>
-}(true)
+<metadata login="true" ></metadata>

@@ -7,7 +7,7 @@ import play.api.mvc.{Action, Controller}
   */
 class SignoutController extends Controller {
   def logout = Action { request =>
-    Redirect(routes.HomeController.index())
+    Redirect(routes.LoginController.showLogin())
       .withNewSession
   }
 }

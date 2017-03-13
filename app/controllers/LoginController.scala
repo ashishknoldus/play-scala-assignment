@@ -22,11 +22,14 @@ class LoginController @Inject()(cache: CacheApi) extends Controller {
 
         cache.get[Map[String, String]](email) match {
           case Some(map) => {
-            if (map("password").bcrypt == password) {
+            if (password.isBcrypted(map("password") ) ) {
               Redirect(routes.ProfileController.showProfile()).withSession("connected" -> email)
             } else if (map("suspended") == "yes") {
               Ok(views.html.loginwitherror("You've been suspended by admin. Contact admin."))
             } else {
+              println(s"---------------Password stored ---- " + map("password"))
+              println(s"---------------Password sent ---- " + password.bcrypt)
+
               Ok(views.html.loginwitherror("Password doesn't match for that email"))
             }
           }
@@ -41,7 +44,8 @@ class LoginController @Inject()(cache: CacheApi) extends Controller {
   }
 
   def showLogin = Action {
-    Ok(views.html.login())
+    implicit request =>
+    Ok(views.html.login(request))
   }
 
 }

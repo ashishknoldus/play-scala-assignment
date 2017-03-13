@@ -1,0 +1,15 @@
+@(implicit request: play.api.mvc.RequestHeader)
+<div class="container">
+
+    <div class="jumbotron">
+        <h1>Welcome to User Management Application</h1>
+        <p>Current functionalities : Suspend and resume the users. </p>
+    </div>
+
+</div>
+
+@if(request.session.isEmpty){
+    <metadata login="false" ></metadata>
+}else {
+    <metadata login="true" ></metadata>
+}
